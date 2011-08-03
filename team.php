@@ -68,8 +68,8 @@
 	$c = $db->team;
 	
 	$data = $c->findOne(array("teamName" => $_SESSION['teamName']));
-	echo $data['teamName'] . '<br>';
-	echo '<br><br>';
+	echo '<br><b>'.$data['teamName'] . ':</b><br>';
+	echo '<br>';
 	$players = $data['players'];
 	foreach ($players as $ele){
 	    echo $ele['playerName']. ': '. $ele['playerNumber'] . '<br>';
