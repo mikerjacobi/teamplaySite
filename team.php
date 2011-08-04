@@ -16,7 +16,7 @@
 
 	<label>Create Player</label> <br/>
 	
-	<select name="teamName">
+	<select name="teamid">
 		<?php
 			$m = new Mongo('localhost', 27017);
 			$db = $m->teamplayer;
@@ -26,7 +26,7 @@
 			
 			foreach ($cursor as $obj) 
 			{
-				echo '<option value='.$obj['teamName'].'>'.$obj['teamName'].' </option> <br>';
+				echo '<option value='.$obj['_id'].'>'.$obj['teamName'].' </option> <br>';
 			}
 		?>
 	</select>
@@ -39,11 +39,11 @@
 
 <br><br><br>
 
-<form method="post" action="viewTeamProcess.php">
+<form method="post">
 
 	<label>View Team</label> <br/>
 	
-	<select name="teamName">
+	<select name="teamid">
 		<?php
 			$m = new Mongo('localhost', 27017);
 			$db = $m->teamplayer;
@@ -53,7 +53,7 @@
 			
 			foreach ($cursor as $obj) 
 			{
-				echo '<option value='.$obj['teamName'].'>'.$obj['teamName'].' </option> <br>';
+				echo '<option value='.$obj['_id'].'>'.$obj['teamName'].' </option> <br>';
 			}
 		?>
 	</select>
@@ -67,11 +67,13 @@
 	$db = $m->teamplayer;
 	$c = $db->team;
 	
-	$data = $c->findOne(array("teamName" => $_SESSION['teamName']));
+	$data = $c->findOne(array("_id" => new MongoId($_POST['teamid'])));
 	echo '<br><b>'.$data['teamName'] . ':</b><br>';
 	echo '<br>';
-	$players = $data['players'];
-	foreach ($players as $ele){
+	
+	$c = $db->players;
+	$data = $c->find(array("teamid" => $_POST['teamid']));
+	foreach ($data as $ele){
 	    echo $ele['playerName']. ': '. $ele['playerNumber'] . '<br>';
 	}	
 			

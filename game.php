@@ -1,26 +1,7 @@
-<script type="text/javascript">
-	function getTest()
-	{
-		var xmlhttp;
-		xmlhttp=new XMLHttpRequest();
-		
-		xmlhttp.onreadystatechange=function()
-		{
-			if (xmlhttp.readyState==4 && xmlhttp.status==200)
-			{
-		    	document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
-		    }
-		}
-		
-		xmlhttp.open("GET","ajax_info.txt",true);
-		xmlhttp.send();
-	}
-</script>
-
 
 <form method="post" action="gameProcess.php">
 
-	<label>Schedule Game</label> <br><br>
+	<label>Schedule Game:</label> <br>
 	<label>Home Team</label>
 	<select name="team1">
 		<?php
@@ -32,7 +13,7 @@
 			
 			foreach ($cursor as $obj) 
 			{
-				echo '<option value='.$obj['teamName'].'>'.$obj['teamName'].' </option> <br>';
+				echo '<option value='.$obj['teamName'].','.$obj['_id'].'>'.$obj['teamName'].' </option> <br>';
 			}
 		?>
 	</select> 
@@ -48,12 +29,12 @@
 			
 			foreach ($cursor as $obj) 
 			{
-				echo '<option value='.$obj['teamName'].'>'.$obj['teamName'].' </option> <br>';
+				echo '<option value='.$obj['teamName'].','.$obj['_id'].'>'.$obj['teamName'].' </option> <br>';
 			}
 		?>
 	</select> 
 	
-	<input type="text" id="datepicker" name="date" value="date"> <br><br>
+	<input type="text" id="datepicker" name="date" value="date"> <br>
 	
 	<input type="submit" id="createGame" name="Submit" value="Create Game">
 	
@@ -62,13 +43,13 @@
 
 <form name="gameForm" method="post">
 
-	<label>Add Stats</label> <br><br>
+	<label>Add Stats:</label> <br>
 	<label>Select Game</label>
 	<select name="game" onChange="gameForm.submit();">
 		<?php
 			$m = new Mongo('localhost', 27017);
 			$db = $m->teamplayer;
-			$c = $db->game;
+			$c = $db->games;
 			
 			$cursor = $c->find();
 			
@@ -81,52 +62,69 @@
 		?>
 	</select> 
 	
-</form> <br>
+</form>
 <form name="teamForm" method="post">
 	
 	<label>Team</label>
 	<select name="team" onChange="teamForm.submit();">
 		<?php		
 			
+			$_SESSION['game'] = $_POST['game'];
+		
 			$m = new Mongo('localhost', 27017);
 			$db = $m->teamplayer;
-			$c = $db->game;
+			$c = $db->games;
 			
 			$game = $c->findOne(array('_id' => new MongoId($_POST['game']))); 
 			echo '<option value="">'. ' </option> <br>';
-			echo '<option value='.$game['homeTeam'].'>'.$game['homeTeam'].' </option> <br>';
-			echo '<option value='.$game['awayTeam'].'>'.$game['awayTeam'].' </option> <br>';
+			echo '<option value='.$game['homeid'].'>'.$game['homeTeam'].' </option> <br>';
+			echo '<option value='.$game['awayid'].'>'.$game['awayTeam'].' </option> <br>';
 		?>
 	</select> 
 	
 </form>
 
-<form name="teamForm" method="post">
+<form name="playerForm" method="post">
 	
-	<label>Team</label>
-	<select name="team" onChange="teamForm.submit();">
+	<label>Player</label>
+	<select name="player" onChange="playerForm.submit();">
 		<?php		
 			
+			$_SESSION['team'] = $_POST['team'];
+		
 			$m = new Mongo('localhost', 27017);
 			$db = $m->teamplayer;
-			$c = $db->game;
+			$c = $db->players;
 			
-			$team = $c->findOne(array('_id' => new MongoId($_POST['team']))); 
+			$players = $c->find(array('teamid' => $_POST['team'])); 
 			
 			
 			echo '<option value="">'. ' </option> <br>';
-			foreach ($team['players'] as $player) 
+			foreach ($players as $player) 
 			{
-				echo '<option value='.$obj['_id'].'>'.$obj['date'].': '.$obj['homeTeam'].' vs. '.$obj['awayTeam']. ' </option> <br>';
+				echo '<option value='.$player['_id'].'>'. $player['playerNumber'].': '.$player['playerName']  .' </option> <br>';
 			}
 		?>
 	</select> 
 	
+</form><br>
+
+<?php 
+	$_SESSION['player'] = $_POST['player'];
+		
+	$m = new Mongo('localhost', 27017);
+	$db = $m->teamplayer;
+	$c = $db->players;
+	
+	$player = $c->findOne(array('_id' => new MongoId($_POST['player'])));
+	echo "<b>".$player['playerName'].": </b>";
+
+?>
+<form name="statForm" method="post" action="statProcess.php">
+	<input type="text" id="statistic" value="stat">
+	<input type="text" id="value" value="value">
+	<input type="submit" id="createGame" name="Submit" value="Update!">
 </form>
-
-
-
-
 
 
 
