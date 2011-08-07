@@ -39,44 +39,41 @@
 
 <br><br><br>
 
-<form method="post">
-
-	<label>View Team</label> <br/>
-	
-	<select name="teamid">
+<form name="viewTeam" method="post" action="viewTeamProcess.php">
+	<select name="teamid" onchange="viewTeam.submit();">
 		<?php
 			$m = new Mongo('localhost', 27017);
 			$db = $m->teamplayer;
 			$c = $db->team;
 			
 			$cursor = $c->find();
-			
+			echo '<option> View Team</option>';
 			foreach ($cursor as $obj) 
 			{
 				echo '<option value='.$obj['_id'].'>'.$obj['teamName'].' </option> <br>';
 			}
 		?>
 	</select>
-	<input type="submit" id="viewTeam" name="Submit" value="View Team">
 </form>	
-
-<br><br>
 
 <?php 
 	$m = new Mongo('localhost', 27017);
 	$db = $m->teamplayer;
 	$c = $db->team;
 	
-	$data = $c->findOne(array("_id" => new MongoId($_POST['teamid'])));
-	echo '<br><b>'.$data['teamName'] . ':</b><br>';
-	echo '<br>';
-	
-	$c = $db->players;
-	$data = $c->find(array("teamid" => $_POST['teamid']));
-	foreach ($data as $ele){
-	    echo $ele['playerName']. ': '. $ele['playerNumber'] . '<br>';
-	}	
-			
+	if (!empty($_SESSION['teamName']))
+	{
+		$data = $c->findOne(array("_id" => new MongoId($_SESSION['teamName'])));
+		echo '<br><b>'.$data['teamName'] . ':</b><br>';
+		echo '<br>';
+		
+		$c = $db->players;
+		$data = $c->find(array("teamid" => $_SESSION['teamName']));
+		
+		foreach ($data as $ele){
+		    echo $ele['playerName']. ': '. $ele['playerNumber'] . '<br>';
+		}	
+	}
 
 ?>
 

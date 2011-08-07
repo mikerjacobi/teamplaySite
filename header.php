@@ -55,6 +55,42 @@
 				);
 			});
 		</script>
+		
+		<script type="text/javascript" charset="utf-8">
+			$(function()
+			{
+		  		$("select#ctlGame").change(function()
+		  		{  	  	
+		  			$("select#ctlPlayer").html('<option value=""></option>');
+		  			$("select#ctlStat").html('<option value=""></option>');
+				    $.get("selectProc.php", { id: $("#ctlGame").val()},  function(data){
+				    	$("select#ctlTeam").html(data);
+				    });
+			 	})
+			})
+			
+			$(function()
+			{
+		  		$("select#ctlTeam").change(function()
+		  		{  	  		
+		  			$("select#ctlStat").html('<option value=""></option>');
+				    $.get("selectProc2.php", { id: $("#ctlTeam").val()},  function(data){
+				    	$("select#ctlPlayer").html(data);
+				    });
+			 	})
+			})
+			
+			$(function()
+			{
+		  		$("select#ctlPlayer").change(function()
+		  		{  	  		
+				    $.get("selectProc3.php", { id: $("#ctlPlayer").val()},  function(data){
+				    	$("select#ctlStat").html(data);
+				    });
+			 	})
+			})
+		</script>
+		
 		<style type="text/css">
 			/*demo page css*/
 			body{ font: 62.5% "Trebuchet MS", sans-serif; margin: 50px;}

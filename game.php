@@ -34,25 +34,22 @@
 		?>
 	</select> 
 	
-	<input type="text" id="datepicker" name="date" value="date"> <br>
+	<input type="text" id="datepicker" name="date" value="date">
 	
 	<input type="submit" id="createGame" name="Submit" value="Create Game">
 	
 </form>
 <br><br><br>
 
-<form name="gameForm" method="post">
 
-	<label>Add Stats:</label> <br>
-	<label>Select Game</label>
-	<select name="game" onChange="gameForm.submit();">
+<form name="statForm" method="post" action="statProcess.php">
+	<select name="gid" id="ctlGame">
 		<?php
 			$m = new Mongo('localhost', 27017);
 			$db = $m->teamplayer;
 			$c = $db->games;
 			
 			$cursor = $c->find();
-			
 			
 			echo '<option value="">'. ' </option> <br>';
 			foreach ($cursor as $obj) 
@@ -61,69 +58,17 @@
 			}
 		?>
 	</select> 
-	
-</form>
-<form name="teamForm" method="post">
-	
-	<label>Team</label>
-	<select name="team" onChange="teamForm.submit();">
-		<?php		
-			
-			$_SESSION['game'] = $_POST['game'];
-		
-			$m = new Mongo('localhost', 27017);
-			$db = $m->teamplayer;
-			$c = $db->games;
-			
-			$game = $c->findOne(array('_id' => new MongoId($_POST['game']))); 
-			echo '<option value="">'. ' </option> <br>';
-			echo '<option value='.$game['homeid'].'>'.$game['homeTeam'].' </option> <br>';
-			echo '<option value='.$game['awayid'].'>'.$game['awayTeam'].' </option> <br>';
-		?>
+	<select name="tid" id="ctlTeam">
+		<option value=""></option> 
 	</select> 
 	
-</form>
-
-<form name="playerForm" method="post">
-	
-	<label>Player</label>
-	<select name="player" onChange="playerForm.submit();">
-		<?php		
-			
-			$_SESSION['team'] = $_POST['team'];
-		
-			$m = new Mongo('localhost', 27017);
-			$db = $m->teamplayer;
-			$c = $db->players;
-			
-			$players = $c->find(array('teamid' => $_POST['team'])); 
-			
-			
-			echo '<option value="">'. ' </option> <br>';
-			foreach ($players as $player) 
-			{
-				echo '<option value='.$player['_id'].'>'. $player['playerNumber'].': '.$player['playerName']  .' </option> <br>';
-			}
-		?>
+	<select name="pid" id="ctlPlayer">
+		<option value=""></option> 
 	</select> 
-	
-</form><br>
-
-<?php 
-	$_SESSION['player'] = $_POST['player'];
-		
-	$m = new Mongo('localhost', 27017);
-	$db = $m->teamplayer;
-	$c = $db->players;
-	
-	$player = $c->findOne(array('_id' => new MongoId($_POST['player'])));
-	echo "<b>".$player['playerName'].": </b>";
-
-?>
-<form name="statForm" method="post" action="statProcess.php">
-	<input type="text" id="statistic" value="stat">
-	<input type="text" id="value" value="value">
-	<input type="submit" id="createGame" name="Submit" value="Update!">
+	<select name='sid' id = 'ctlStat'>
+		<option value=""></option> 
+	</select>
+	<input type="submit" name="Submit" value="Increment">
 </form>
 
 

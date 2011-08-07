@@ -11,7 +11,7 @@
 
 
 <body>
-
+<a href="logout.php"> logout </a>
 <table border="0" width="100%">
   <tr>
   	<td width="20%"> <?php  print_r($_SESSION); ?> </td>
