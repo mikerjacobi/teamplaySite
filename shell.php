@@ -5,6 +5,8 @@
 		<?php 
 			include("header.php"); 
 			session_start();
+			if ($_SESSION['authenticate'] != 1)
+				header( 'Location: login.php' ) ;
 		?>
 		<title> TeamPlayer </title>
 </head>

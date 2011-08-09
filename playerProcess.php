@@ -8,7 +8,8 @@
 	$team = $_POST['teamid'];
 	$name = $_POST['playerName'];
 	$number = $_POST['playerNumber'];
-	$obj = array("teamid"=>$team, "playerName"=>$name, "playerNumber"=>$number);
+	$coach = $_POST['coach'];
+	$obj = array("teamid"=>$team, "playerName"=>$name, "playerNumber"=>$number, "coach"=>$coach);
 	$c->insert($obj);
 	
 	

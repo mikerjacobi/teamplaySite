@@ -32,6 +32,7 @@
 	</select>
 	<input type="text" size="15" name = "playerName" value="Player_Name">
 	<input type="text" size="15" name = "playerNumber" value="Player_Number">
+	<input type="checkbox" name="coach" value="true" />
 	
 	<input type="submit" id="createPlayer" name="Submit" value="Create Player">
 	

@@ -1,4 +1,3 @@
-
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<link type="text/css" href="css/start/jquery-ui-1.8.14.custom.css" rel="stylesheet" />	
 		<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>

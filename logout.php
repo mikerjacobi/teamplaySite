@@ -3,6 +3,6 @@
 	session_unset();
     session_destroy();
     $_SESSION = array();
-    header( 'Location: shell.php#tab1' ) ;
+    header( 'Location: login.php' ) ;
 
 ?>
